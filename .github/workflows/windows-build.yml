@@ -12,10 +12,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ---- FIXED: Setup Flutter using 'channel' only (avoid passing flutter-version='stable') ----
       - name: Setup Flutter (stable)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable'
+          channel: stable
+
+      - name: Show Flutter version
+        run: flutter --version
 
       - name: Enable Windows desktop for Flutter
         run: flutter config --enable-windows-desktop
