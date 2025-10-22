@@ -38,3 +38,15 @@ jobs:
         with:
           name: windows-release
           path: build/windows/runner/Release/
+        # Reemplaza PROJECT_DIR por la ruta relativa de tu proyecto (por ejemplo: ./ o ./Antmar-Comic-Collector)
+      - name: Get dependencies
+        working-directory: PROJECT_DIR
+        run: flutter pub get
+
+      - name: Ensure windows platform files exist
+        working-directory: PROJECT_DIR
+        run: flutter create --platforms=windows .
+
+      - name: Build Windows release
+        working-directory: PROJECT_DIR
+        run: flutter build windows --release
