@@ -1,0 +1,23 @@
+name: comic_splitter
+description: Visual comic splitter prototype (desktop)
+publish_to: "none"
+version: 0.0.1
+
+environment:
+  sdk: ">=2.18.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  file_selector: ^1.0.4
+  path: ^1.8.3
+  archive: ^3.3.8
+  image: ^4.0.21
+  http: ^0.13.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
