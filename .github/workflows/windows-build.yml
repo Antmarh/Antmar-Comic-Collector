@@ -12,7 +12,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ---- FIXED: Setup Flutter using 'channel' only (avoid passing flutter-version='stable') ----
       - name: Setup Flutter (stable)
         uses: subosito/flutter-action@v2
         with:
@@ -21,8 +20,24 @@ jobs:
       - name: Show Flutter version
         run: flutter --version
 
-      - name: Enable Windows desktop for Flutter
-        run: flutter config --enable-windows-desktop
+      - name: Debug: show repo root and list files
+        run: |
+          echo "Working directory:"
+          pwd
+          echo ""
+          echo "Listing root (PowerShell):"
+          powershell -Command "Get-ChildItem -Force | Sort-Object Name | Format-Table Name,Length,Mode -AutoSize"
+          echo ""
+          echo "Listing tree (2 levels):"
+          powershell -Command "Get-ChildItem -Recurse -Depth 2 -Force | Select-Object FullName | Format-Table -AutoSize"
+
+      - name: Cache Pub packages
+        uses: actions/cache@v4
+        with:
+          path: C:\Users\runneradmin\AppData\Local\Pub\Cache
+          key: pub-cache-win-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            pub-cache-win-${{ runner.os }}-
 
       - name: Get dependencies
         run: flutter pub get
@@ -38,15 +53,3 @@ jobs:
         with:
           name: windows-release
           path: build/windows/runner/Release/
-        # Reemplaza PROJECT_DIR por la ruta relativa de tu proyecto (por ejemplo: ./ o ./Antmar-Comic-Collector)
-      - name: Get dependencies
-        working-directory: PROJECT_DIR
-        run: flutter pub get
-
-      - name: Ensure windows platform files exist
-        working-directory: PROJECT_DIR
-        run: flutter create --platforms=windows .
-
-      - name: Build Windows release
-        working-directory: PROJECT_DIR
-        run: flutter build windows --release
